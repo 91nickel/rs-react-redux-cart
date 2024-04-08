@@ -1,6 +1,9 @@
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
+import { ProductsContext } from "../ProductsContext";
 
-export const Product = memo(({ product, increaseQuantity, decreaseQuantity }) => {
+export const Product = memo(({ product }) => {
+    const { increaseQuantity, decreaseQuantity } = useContext(ProductsContext);
+
     return (
         <li className="product">
             <div className="product-preview">
