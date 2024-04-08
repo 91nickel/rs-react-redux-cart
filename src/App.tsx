@@ -3,18 +3,21 @@ import { Header } from './Header/Header';
 import { Cart } from './Cart/Cart'
 import './App.css';
 import { Provider } from 'react-redux';
-import { store } from './redux/store'
+import { persistor, store } from './redux/store'
 import { OrderModal } from './OrderModal/OrderModal';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
-        <Header />
-        <Cart />
-        <Total />
-        <OrderModal />
-      </div>
+      <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
+        <div className="App">
+          <Header />
+          <Cart />
+          <Total />
+          <OrderModal />
+        </div>
+      </PersistGate>
     </Provider>
   );
 }
