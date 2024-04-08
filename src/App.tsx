@@ -4,6 +4,7 @@ import { Cart } from './Cart/Cart'
 import './App.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store'
+import { OrderModal } from './OrderModal/OrderModal';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Header />
         <Cart />
         <Total />
+        <OrderModal />
       </div>
     </Provider>
   );
