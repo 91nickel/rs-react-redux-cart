@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from 'react-redux';
 import { Product } from "../Product/Product";
-import { ProductsContext } from "../ProductsContext";
 
 export function Cart() {
-    const {products} = useContext(ProductsContext);
+    const products = useSelector(state => state.products);
+    
     return (
         <ul className="cart">
             {products.map(product => (

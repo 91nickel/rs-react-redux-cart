@@ -1,8 +1,21 @@
-import React, { useContext } from "react";
-import { ProductsContext } from "../ProductsContext";
+import React from "react";
+import { useSelector } from 'react-redux';
+import { round } from "../utils";
 
 export function Total() {
-    const {total} = useContext(ProductsContext);
+    const total = useSelector(state => {
+        const subtotal = state.products.reduce((acc, product) => {
+            return acc + product.price * product.quantity;
+        }, 0);
+        const tax = subtotal * .13;
+        const total = subtotal + tax;
+
+        return {
+            subtotal: round(subtotal),
+            tax: round(tax),
+            total: round(total)
+        }
+    })
 
     return <table className="bill">
         <tbody>
