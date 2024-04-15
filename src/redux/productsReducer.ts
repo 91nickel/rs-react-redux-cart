@@ -1,35 +1,49 @@
-import { initialProducts } from '../initialProducts';
-import { INCREASE_QUANTITY_ACTION, DECREASE_QUANTITY_ACTION, ProjectActions } from './actions'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { IProduct } from '../types/IProduct';
+import { orderApiSlice } from './orderReducer';
 
-export function productsReducer(state = initialProducts, action: ProjectActions) {
-    switch (action.type) {
-        case INCREASE_QUANTITY_ACTION:
-            return state.map((product) => {
-                if (product.id === action.payload.id) {
-                    return {
-                        ...product,
-                        quantity: product.quantity + 1
-                    }
-                }
+const initialState: Record<IProduct['id'], number> = {};
 
-                return product;
+export const productsSlice = createSlice({
+    name: 'products',
+    initialState,
+    reducers: {
+        increaseQuantity(state, action: PayloadAction<IProduct['id']>) {
+            if (state[action.payload]) {
+                state[action.payload]++;
+            } else {
+                state[action.payload] = 1;
+            }
+        },
+        decreaseQuantity(state, action: PayloadAction<IProduct['id']>) {
+            if (state[action.payload] > 0) {
+                state[action.payload]--;
+            } else {
+                state[action.payload] = 0;
+            }
+        }
+    },
+    extraReducers(builder) {
+        builder.addMatcher(
+            orderApiSlice.endpoints.createOrder.matchFulfilled,
+            () => initialState
+        )
+    },
+})
+
+export const productsApiSlice = createApi({
+    reducerPath: 'productsApi',
+    baseQuery: fetchBaseQuery({ baseUrl: "https://mocki.io/v1" }),
+    endpoints(builder) {
+        return {
+            getProducts: builder.query<IProduct[], void>({
+                query: () => ({ url: '/cc35d073-1953-4dbc-b0b8-b0bedf958e44' })
             })
-
-        case DECREASE_QUANTITY_ACTION:
-            return state.map((product) => {
-                if (product.id === action.payload.id && product.quantity > 0) {
-                    return {
-                        ...product,
-                        quantity: product.quantity - 1
-                    }
-                }
-
-                return product;
-            })
-
-        default:
-            break;
+        }
     }
+})
 
-    return state;
-}
+export const { increaseQuantity, decreaseQuantity } = productsSlice.actions
+
+export const { useGetProductsQuery } = productsApiSlice;

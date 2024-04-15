@@ -1,13 +1,21 @@
-import React from "react";
-import { useSelector } from 'react-redux';
-import { createOrderAction } from "../redux/actions";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../redux/hooks";
+import { useCreateOrderMutation } from "../redux/orderReducer";
+import { useGetProductsQuery } from "../redux/productsReducer";
 import { round } from "../utils";
 
 export function Total() {
+    const { data: products } = useGetProductsQuery();
+    const [createOrder, { isLoading }] = useCreateOrderMutation({ fixedCacheKey: 'order' });
     const total = useAppSelector(state => {
-        const subtotal = state.products.reduce((acc, product) => {
-            return acc + product.price * product.quantity;
+        if (!products) {
+            return {
+                subtotal: 0,
+                tax: 0,
+                total: 0,
+            };
+        }
+        const subtotal = products.reduce((acc, product) => {
+            return acc + product.price * (state.products[product.id] || 0);
         }, 0);
         const tax = subtotal * .13;
         const total = subtotal + tax;
@@ -18,9 +26,6 @@ export function Total() {
             total: round(total)
         }
     })
-
-    const dispatch = useAppDispatch();
-    const disableBuyButton = useAppSelector(state => state.order.loading);
 
     return <table className="bill">
         <tbody>
@@ -38,7 +43,7 @@ export function Total() {
             </tr>
             <tr>
                 <td colSpan={2} className="button-cell">
-                    <button className="main-button" disabled={disableBuyButton} onClick={() => dispatch(createOrderAction())}>Buy</button>
+                    <button className="main-button" disabled={isLoading} onClick={() => createOrder()}>Buy</button>
                 </td>
             </tr>
         </tbody>

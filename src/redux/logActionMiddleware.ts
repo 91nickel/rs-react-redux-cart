@@ -1,11 +1,10 @@
-import { Middleware } from "redux";
+import { AnyAction, Middleware } from "redux";
 import { logAction } from "../metrics/logAction";
-import { ProjectActions } from "./actions";
 import { RootState } from "./store";
 
 export const logActionMiddleware: Middleware<{}, RootState> = (storeAPI) => {
     return function wrapDispatch(next) {
-        return function handleAction(action: ProjectActions) {
+        return function handleAction(action: AnyAction) {
             logAction(action);
             next(action);
         }

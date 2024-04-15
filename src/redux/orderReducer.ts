@@ -1,33 +1,15 @@
-import { ProjectActions, CREATE_ORDER_ACTION, CREATE_ORDER_SUCCESS_ACTION, RESET_ORDER_ACTION } from './actions'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
-const initialState = {
-    loading: false,
-    confirmed: false,
-}
+export const orderApiSlice = createApi({
+    reducerPath: 'orderApi',
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://mocki.io/v1' }),
+    endpoints(build) {
+        return {
+            createOrder: build.mutation<{ success: boolean }, void>({
+                query: () => ({ url: '/028f7a08-1860-4639-a282-ce76bde05976' }),
+            })
+        }
+    },
+})
 
-export function orderReducer(state = initialState, action: ProjectActions) {
-    switch (action.type) {
-        case CREATE_ORDER_ACTION:
-            return {
-                loading: true,
-                confirmed: false,
-            }
-
-        case CREATE_ORDER_SUCCESS_ACTION:
-            return {
-                loading: false,
-                confirmed: true,
-            }
-
-        case RESET_ORDER_ACTION:
-            return {
-                loading: false,
-                confirmed: false,
-            }
-
-        default:
-            break;
-    }
-
-    return state;
-}
+export const { useCreateOrderMutation } = orderApiSlice;
