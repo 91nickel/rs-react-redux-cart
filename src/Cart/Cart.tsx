@@ -1,8 +1,6 @@
-import React from "react";
-import { useSelector } from 'react-redux';
 import { Product } from "../Product/Product";
 import { useAppSelector } from "../redux/hooks";
-import { useGetProductsQuery } from "../redux/productsReducer";
+import { useGetProductsQuery } from "../redux/products";
 
 export function Cart() {
     const { data: products } = useGetProductsQuery();

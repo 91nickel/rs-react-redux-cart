@@ -1,4 +1,4 @@
-import { useCreateOrderMutation } from "../redux/orderReducer";
+import { useCreateOrderMutation } from "../redux/order";
 
 export const OrderModal = () => {
     const [, { data, reset }] = useCreateOrderMutation({ fixedCacheKey: 'order' });

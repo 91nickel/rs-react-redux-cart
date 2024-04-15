@@ -1,6 +1,6 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { decreaseQuantity, increaseQuantity } from "../redux/productsReducer";
+import { decreaseQuantity, increaseQuantity } from "../redux/products";
 import { IProduct } from "../types/IProduct";
 
 interface IProductProps {

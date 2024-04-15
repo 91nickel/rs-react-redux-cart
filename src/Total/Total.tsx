@@ -1,6 +1,6 @@
 import { useAppSelector } from "../redux/hooks";
-import { useCreateOrderMutation } from "../redux/orderReducer";
-import { useGetProductsQuery } from "../redux/productsReducer";
+import { useCreateOrderMutation } from "../redux/order";
+import { useGetProductsQuery } from "../redux/products";
 import { round } from "../utils";
 
 export function Total() {
